@@ -32,6 +32,7 @@ const server = http.createServer(async (req, res) => {
     const apiResult = await conn.toArray();
     const jsonData = JSON.stringify(apiResult);
     //res.writeHead(200, headers);
+    res.writeHead(200, { "Content-Type": "application/json" });
     res.end(jsonData);
   } else {
     res.end("Url not found");
