@@ -3,6 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const { MongoClient } = require("mongodb");
 
+
 const uri = "mongodb+srv://priya1234:1234@vuemongo.xlr83a0.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri);
 
@@ -15,7 +16,7 @@ const connectDB = async () => {
 };
 connectDB();
 const server = http.createServer(async (req, res) => {
-  res.writeHead(200, { "Content-Type": "text/html" });
+  //res.writeHead(200, { "Content-Type": "text/html" });
   //res.write("Welcome to Hospitals Management");
   const url = req.url;
   if (url === "/") {
@@ -23,6 +24,8 @@ const server = http.createServer(async (req, res) => {
       path.join(__dirname, "public", "portfolio.html"),
       (error, portfolioData) => {
         //if (error) throw error;
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST')
         res.writeHead(200, { "Content-Type": "text/html" });
         res.end(portfolioData);
       }
@@ -31,6 +34,8 @@ const server = http.createServer(async (req, res) => {
     const conn = client.db("vuemongo").collection("hospitals").find({});
     const apiResult = await conn.toArray();
     const jsonData = JSON.stringify(apiResult);
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST')
     //res.writeHead(200, headers);
     res.writeHead(200, { "Content-Type": "application/json" });
     res.end(jsonData);
@@ -39,5 +44,5 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 5959;
-server.listen(PORT, () => console.log(`server is running on ${PORT}`));
+const PORT = process.env.PORT || 5050;
+server.listen(PORT, () => console.log(`server is running on ${PORT}`));
